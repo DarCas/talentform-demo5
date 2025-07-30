@@ -6,9 +6,9 @@
                 <tr>
                     <th scope="col" class="text-end">#</th>
                     <th scope="col">Attività</th>
-                    <th scope="col">Data inserimento</th>
-                    <th scope="col">Data Scadenza</th>
-                    <th scope="col">Data Completamento</th>
+                    <th scope="col">Data inizio</th>
+                    <th scope="col">Data scadenza</th>
+                    <th scope="col">Data completamento</th>
                 </tr>
                 </thead>
 

@@ -56,18 +56,18 @@ class Todo extends Model
     function dataInserimentoHuman(): string
     {
         return $this->data_inserimento
-            ->format('d F Y');
+            ->format('d/m/Y');
     }
 
     function dataScadenzaHuman(): string
     {
         $data = $this->data_scadenza
-            ->format('d F Y');
+            ->format('d/m/Y');
 
         $days = $this->data_scadenza
             ->diffInDays(Carbon::now());
 
-        $days = abs(round($days));
+        $days = round($days);
 
         return "{$data} ({$days} giorni)";
     }

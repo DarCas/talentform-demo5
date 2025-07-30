@@ -41,7 +41,7 @@
                         required></textarea>
                 </div>
                 <div class="col-12 py-3">
-                    <label for="dataInserimento">Data inserimento</label>
+                    <label for="dataInserimento">Data inizio</label>
                     <input
                         name="dataInserimento"
                         type="date"
