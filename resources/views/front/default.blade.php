@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" class="{{ $centered ? 'h-100' : '' }}" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $title }}</title>
+    <link href="//cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+<body class="d-flex {{ $centered ? 'h-100 text-center' : '' }} text-bg-dark">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="mb-auto">
+        <div class="row">
+            <div class="col-6">
+                <h3 class="mb-0">Todo List</h3>
+            </div>
+            <div class="col-6 text-end">
+                @if($user)
+                    <div class="btn-group-lg">
+                        <button type="button" class="btn btn-info dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ $user['usernm'] }}
+                        </button>
+                        <ul class="dropdown-menu bg-danger dropdown-menu-end shadow">
+                            <li>
+                                <a class="dropdown-item bg-danger text-white"
+                                   href="/logout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </header>
+
+    <main class="p-3">
+        {!! $content !!}
+    </main>
+
+    <footer class="mt-auto text-white-50 text-end">
+        <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>
+    </footer>
+</div>
+
+<script src="//cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+</body>
+</html>
