@@ -1,5 +1,5 @@
 <form
-    action="/login"
+    action="/login/login"
     method="post"
     style="width: 50%"
     class="mx-auto"

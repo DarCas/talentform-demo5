@@ -12,9 +12,9 @@ Route::controller(FrontController::class)
 
 Route::controller(LoginController::class)
     ->group(function () {
-        Route::post('/login', 'login');
+        Route::post('/login/login', 'login');
 
-        Route::get('/logout', 'logout');
+        Route::get('/login/logout', 'logout');
     });
 
 Route::controller(TodosController::class)
