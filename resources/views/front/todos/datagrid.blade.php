@@ -14,16 +14,14 @@
 
                 <tbody>
                 @foreach($todos as $todo)
-                    <tr>
-                        <th rowspan="2" scope="row" class="text-end">{{ $todo->id }}</th>
-                        <td>{{ $todo->titolo }}</td>
-                        <td>{{ $todo->dataInserimentoHuman() }}</td>
-                        <td>{{ $todo->dataScadenzaHuman() }}</td>
-                        <td>{{ $todo->dataCompletamentoHuman() ?? 'In corso...' }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">{!! nl2br($todo->descrizione) !!}</td>
-                    </tr>
+                    <x-todos.tr-component
+                        :id="$todo->id"
+                        :titolo="$todo->titolo"
+                        :dataInserimento="$todo->dataInserimentoHuman()"
+                        :dataScadenza="$todo->dataScadenzaHuman()"
+                        :dataCompletamento="$todo->dataCompletamentoHuman() ?? 'In corso...'"
+                        :descrizione="$todo->descrizione"
+                    />
                 @endforeach
                 </tbody>
             </table>

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Session;
 
 class FrontController extends Controller
 {
-    function index()
+    public function index()
     {
         if (Session::has('logged_in')) {
             $todos = Todo::orderBy('data_inserimento')
