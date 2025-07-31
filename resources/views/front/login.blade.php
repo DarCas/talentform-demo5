@@ -1,8 +1,8 @@
 <form
     action="/login/login"
+    class="mx-auto"
     method="post"
     style="width: 50%"
-    class="mx-auto"
 >
     @csrf
 
