@@ -74,6 +74,6 @@ class Todo extends Model
 
     function dataCompletamentoHuman(): ?string
     {
-        return $this->data_completamento?->format('d F Y') ?? null;
+        return $this->data_completamento?->format('d/m/Y') ?? null;
     }
 }

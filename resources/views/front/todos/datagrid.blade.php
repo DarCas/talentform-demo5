@@ -9,11 +9,12 @@
                     <th scope="col">Data inizio</th>
                     <th scope="col">Data scadenza</th>
                     <th scope="col">Data completamento</th>
+                    <th>&nbsp;</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                         {!! $pagination !!}
                     </td>
                 </tr>
@@ -22,6 +23,7 @@
                 <tbody>
                 @foreach($todos as $todo)
                     <x-todos.tr-component
+                        :editing="$todo->id === $id"
                         :id="$todo->id"
                         :titolo="$todo->titolo"
                         :dataInserimento="$todo->dataInserimentoHuman()"

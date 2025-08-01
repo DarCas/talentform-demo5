@@ -37,6 +37,10 @@ class LoginController extends Controller
             return redirect('/');
         }
 
+        /**
+         * Verifico se le credenziali fornite sono associate a un utente.
+         * Interrogo la tabella del database degli utenti con il Model (User).
+         */
         $user = User::where('usernm', $validator->getValue('usernm'))
             ->where('passwd', sha1($validator->getValue('passwd')))
             ->first();

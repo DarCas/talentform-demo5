@@ -1,6 +1,6 @@
 <div class="card shadow p-2">
     <form
-        action="/todos/add"
+        action="/todos{{ $todo ? "/$todo->id" : '' }}"
         method="post"
         class="card-body"
     >
@@ -12,7 +12,6 @@
                 style="width: 100%"
                 role="alert"
             >
-
                 <h3>Si sono verificati errori:</h3>
                 <ul>
                     @foreach ($errors as $key => $value)
@@ -22,11 +21,12 @@
             </div>
         @endif
 
-        <h2 class="card-title">Aggiungi un todo</h2>
+        <h2 class="card-title">{{ $todo ? 'Modifica' : 'Aggiungi' }} un todo</h2>
         <div class="card-text">
             <div class="row">
                 <div class="col-12 py-3">
                     <input
+                        value="{{ $todo?->titolo ?? '' }}"
                         name="titolo"
                         type="text"
                         class="form-control"
@@ -38,11 +38,12 @@
                         name="descrizione"
                         class="form-control"
                         placeholder="Descrizione"
-                        required></textarea>
+                        required>{{ $todo?->descrizione ?? '' }}</textarea>
                 </div>
                 <div class="col-12 py-3">
                     <label for="dataInserimento">Data inizio</label>
                     <input
+                        value="{{ substr($todo?->data_inserimento ?? '', 0, 10) }}"
                         name="dataInserimento"
                         type="date"
                         class="form-control"
@@ -51,6 +52,7 @@
                 <div class="col-12">
                     <label for="dataScadenza">Data scadenza</label>
                     <input
+                        value="{{ substr($todo?->data_scadenza ?? '', 0, 10) }}"
                         name="dataScadenza"
                         type="date"
                         class="form-control"
@@ -58,14 +60,25 @@
                 </div>
                 <div class="col-12 py-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="email" value="1" id="checkDefault">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="email"
+                            value="1"
+                            {{ $todo?->email ? 'checked' : '' }}
+                            id="checkDefault">
                         <label class="form-check-label" for="checkDefault">
                             Ricevi avviso
                         </label>
                     </div>
                 </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Aggiungi</button>
+                @if($todo)
+                    <div class="col-6">
+                        <a href="/" class="btn btn-secondary">Chiudi</a>
+                    </div>
+                @endif
+                <div class="col-{{ $todo ? 6 : 12 }} text-end">
+                    <button type="submit" class="btn btn-primary">{{ $todo ? 'Modifica' : 'Aggiungi' }}</button>
                 </div>
             </div>
         </div>

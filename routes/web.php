@@ -19,5 +19,8 @@ Route::controller(LoginController::class)
 
 Route::controller(TodosController::class)
     ->group(function () {
-        Route::post('/todos/add', 'add');
+        Route::post('/todos', 'create');
+        Route::post('/todos/{id}', 'update');
+        Route::get('/todos/{id}/completed', 'completed');
+        Route::get('/todos/{id}/delete', 'delete');
     });
