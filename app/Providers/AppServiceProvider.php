@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        /**
+         * Con questa riga si dice a Laravel che, nel caso si scelga di renderizzare la paginazione di default,
+         * deve usare il framework HTML Bootstrap 5.
+         */
         Paginator::useBootstrapFive();
     }
 }
