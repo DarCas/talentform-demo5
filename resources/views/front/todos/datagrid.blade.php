@@ -45,13 +45,14 @@
                 <tbody>
                 @forelse($todos as $todo)
                     <x-todos.tr-component
-                        :editing="$todo->id === $id"
-                        :id="$todo->id"
-                        :titolo="$todo->titolo"
                         :dataInserimento="$todo->dataInserimentoHuman()"
                         :dataScadenza="$todo->dataScadenzaHuman()"
                         :dataCompletamento="$todo->dataCompletamentoHuman() ?? 'In corso...'"
                         :descrizione="$todo->descrizione"
+                        :editing="$todo->id === $id"
+                        :email="$todo->email"
+                        :id="$todo->id"
+                        :titolo="$todo->titolo"
                     />
                 @empty
                     <tr>

@@ -1,22 +1,26 @@
 @props([
-    'editing',
-    'id',
-    'titolo',
     'dataInserimento',
     'dataScadenza',
     'dataCompletamento',
-    'descrizione'
+    'descrizione',
+    'editing',
+    'email',
+    'id',
+    'titolo',
 ])
 <tr class="{{ $editing ? 'table-primary' : '' }}">
-    <th rowspan="2" scope="row" class="text-end">{{ $id }}</th>
+    <th scope="row" class="text-end">{{ $id }}</th>
     <td>{{ $titolo }}</td>
     <td>{{ $dataInserimento }}</td>
     <td>{{ $dataScadenza }}</td>
     <td>{{ $dataCompletamento }}</td>
-    <td rowspan="2">
+    <td rowspan="2" style="vertical-align:middle">
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
+            <button
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <i class="bi bi-three-dots-vertical"></i>
             </button>
             <ul class="dropdown-menu">
@@ -40,5 +44,10 @@
     </td>
 </tr>
 <tr class="{{ $editing ? 'table-primary' : '' }}">
+    <td class="text-end">
+        @if($email)
+            <i class="bi bi-bell-fill" style="color: #a1a109"></i>
+        @endif
+    </td>
     <td colspan="4">{!! nl2br($descrizione) !!}</td>
 </tr>
