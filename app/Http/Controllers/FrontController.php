@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class FrontController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (Session::has('logged_in')) {
-            $todos = Todo::orderBy('data_inserimento')
-                ->orderBy('data_scadenza')
-                ->get();
+            $builder = Todo::orderBy('data_inserimento')
+                ->orderBy('data_scadenza');
+
+            $paginate = $builder->paginate((int)$request->get('perPage', 10));
 
             $content = view('front.todos', [
                 'errors' => Session::get('errors'),
-                'todos' => $todos,
+                'pagination' => $paginate->links()->toHtml(),
+                'todos' => $paginate->items(),
             ]);
         } else {
             $content = view('front.login', [

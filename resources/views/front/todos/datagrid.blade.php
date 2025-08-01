@@ -11,6 +11,13 @@
                     <th scope="col">Data completamento</th>
                 </tr>
                 </thead>
+                <tfoot>
+                <tr>
+                    <td colspan="5">
+                        {!! $pagination !!}
+                    </td>
+                </tr>
+                </tfoot>
 
                 <tbody>
                 @foreach($todos as $todo)
