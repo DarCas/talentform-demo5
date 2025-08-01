@@ -16,9 +16,11 @@ class FrontController extends Controller
         if (Session::has('logged_in')) {
             /**
              * Interrogo la tabella del database tramite il Model (Todo).
-             * Ordino i dati per «data_inserimento» e «data_scadenza».
+             * Recupero solo i record dell'utente loggato.
+             * Ordino i records per «data_inserimento» e «data_scadenza».
              */
-            $builder = Todo::orderBy('data_inserimento')
+            $builder = Todo::where('user_id', Session::get('logged_in')->id)
+                ->orderBy('data_inserimento')
                 ->orderBy('data_scadenza');
 
             if ($request->get('q')) {

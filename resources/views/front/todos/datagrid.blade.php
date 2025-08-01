@@ -21,11 +21,11 @@
                                     <button type="button" class="btn btn-primary dropdown-toggle"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                         {{ request()->query('perPage', 10) }}
-                                    </button>
-                                    <ul class="dropdown-menu shadow">
-                                        <li>
-                                            <a class="dropdown-item"
-                                               href="{{ request()->fullUrlWithQuery(['perPage' => 10]) }}">10</a>
+                                </button>
+                                <ul class="dropdown-menu shadow">
+                                    <li>
+                                        <a class="dropdown-item"
+                                           href="{{ request()->fullUrlWithQuery(['perPage' => 10]) }}">10</a>
                                             <a class="dropdown-item"
                                                href="{{ request()->fullUrlWithQuery(['perPage' => 25]) }}">25</a>
                                             <a class="dropdown-item"
@@ -43,7 +43,7 @@
                 </tfoot>
 
                 <tbody>
-                @foreach($todos as $todo)
+                @forelse($todos as $todo)
                     <x-todos.tr-component
                         :editing="$todo->id === $id"
                         :id="$todo->id"
@@ -53,7 +53,13 @@
                         :dataCompletamento="$todo->dataCompletamentoHuman() ?? 'In corso...'"
                         :descrizione="$todo->descrizione"
                     />
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            Non ci sono ancora attività
+                        </td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
         </div>

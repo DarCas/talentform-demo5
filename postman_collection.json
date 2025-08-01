@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "e95f2ef8-263f-45f1-a35e-1a97d381cd5d",
+		"name": "Demo 5",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2305909"
+	},
+	"item": [
+		{
+			"name": "/api/todos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://demo5.loc/api/todos?q=titolo",
+					"protocol": "http",
+					"host": [
+						"demo5",
+						"loc"
+					],
+					"path": [
+						"api",
+						"todos"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "perPage",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "q",
+							"value": "titolo"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/todos",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "titolo",
+							"value": "Questo è un inserimento da API",
+							"type": "text"
+						},
+						{
+							"key": "descrizione",
+							"value": "Descrizione del mio inserimento da API",
+							"type": "text"
+						},
+						{
+							"key": "dataInserimento",
+							"value": "2025-08-01",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "dataScadenza",
+							"value": "2025-09-01",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://demo5.loc/api/todos",
+					"protocol": "http",
+					"host": [
+						"demo5",
+						"loc"
+					],
+					"path": [
+						"api",
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/todos/{id}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\n            \"userId\": 1,\n            \"titolo\": \"Questa è una modifica via API\",\n            \"descrizione\": \"Quia ut deleniti reprehenderit quia voluptate eum. Debitis eum et suscipit consequatur et. Nihil quo dolorem aut nesciunt amet.\",\n            \"dataInserimento\": \"2025-07-01\",\n            \"dataScadenza\": \"2025-10-25\",\n            \"dataCompletamento\": null,\n            \"email\": false\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://demo5.loc/api/todos/505",
+					"protocol": "http",
+					"host": [
+						"demo5",
+						"loc"
+					],
+					"path": [
+						"api",
+						"todos",
+						"505"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/todos/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://demo5.loc/api/todos/123",
+					"protocol": "http",
+					"host": [
+						"demo5",
+						"loc"
+					],
+					"path": [
+						"api",
+						"todos",
+						"123"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
