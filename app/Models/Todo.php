@@ -53,6 +53,18 @@ class Todo extends Model
         return $this->belongsTo(User::class);
     }
 
+    function dataInserimentoHTML(): string
+    {
+        return $this->data_inserimento
+            ->format('Y-m-d');
+    }
+
+    function dataScadenzaHTML(): string
+    {
+        return $this->data_scadenza
+            ->format('Y-m-d');
+    }
+
     function dataInserimentoHuman(): string
     {
         return $this->data_inserimento

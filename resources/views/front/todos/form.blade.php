@@ -43,7 +43,7 @@
                 <div class="col-12 py-3">
                     <label for="dataInserimento">Data inizio</label>
                     <input
-                        value="{{ substr($todo?->data_inserimento ?? '', 0, 10) }}"
+                        value="{{ $todo?->dataInserimentoHTML() }}"
                         name="dataInserimento"
                         type="date"
                         class="form-control"
@@ -52,7 +52,7 @@
                 <div class="col-12">
                     <label for="dataScadenza">Data scadenza</label>
                     <input
-                        value="{{ substr($todo?->data_scadenza ?? '', 0, 10) }}"
+                        value="{{ $todo?->dataScadenzaHTML() }}"
                         name="dataScadenza"
                         type="date"
                         class="form-control"
