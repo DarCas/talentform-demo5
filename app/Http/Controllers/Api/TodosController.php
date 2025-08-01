@@ -65,6 +65,19 @@ class TodosController extends Controller
             $builder->where('id', $request->get('id'));
         }
 
+        if ($request->get('q')) {
+            /**
+             * Se effettuo una ricerca, filtro i valori della tabella del database (Todo) per
+             * «titolo» e per «descrizione». Utilizzo il LIKE di SQL, che mi permette di cercare
+             * una stringa all'interno di una parola.
+             *
+             * Il record viene selezionato se la stringa è presente in «titolo» oppure in «descrizione» o in
+             * entrambe le colonne.
+             */
+            $builder->where('titolo', 'LIKE', "%{$request->get('q')}%");
+            $builder->orWhere('descrizione', 'LIKE', "%{$request->get('q')}%");
+        }
+
         $paginate = $builder->paginate((int)$request->get('perPage', 10));
 
         return response()

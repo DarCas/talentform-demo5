@@ -14,8 +14,30 @@
                 </thead>
                 <tfoot>
                 <tr>
-                    <td colspan="6">
-                        {!! $pagination !!}
+                    <td colspan="6" class="px-4 pt-4">
+                        <div class="row">
+                            <div class="col-3">
+                                <!--div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ request()->query('perPage', 10) }}
+                                    </button>
+                                    <ul class="dropdown-menu shadow">
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="{{ request()->fullUrlWithQuery(['perPage' => 10]) }}">10</a>
+                                            <a class="dropdown-item"
+                                               href="{{ request()->fullUrlWithQuery(['perPage' => 25]) }}">25</a>
+                                            <a class="dropdown-item"
+                                               href="{{ request()->fullUrlWithQuery(['perPage' => 50]) }}">50</a>
+                                        </li>
+                                    </ul>
+                                </div-->
+                            </div>
+                            <div class="col-9">
+                                {!! $pagination !!}
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 </tfoot>

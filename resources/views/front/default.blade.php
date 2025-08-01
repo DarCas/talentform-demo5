@@ -12,11 +12,28 @@
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="mb-auto">
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <h3 class="mb-0">Todo List</h3>
             </div>
-            <div class="col-6 text-end">
+            <div class="col-4">
+                <form action="/" method="get">
+                    <div class="input-group">
+                        <input
+                            name="q"
+                            value="{{ $q ?? '' }}"
+                            type="search"
+                            class="form-control"
+                            placeholder="Cerca attività"
+                            onchange="this.form.submit();"
+                        >
+                        <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-4 text-end">
                 @if($user)
+
+
                     <x-user-component
                         :user="$user"
                     />

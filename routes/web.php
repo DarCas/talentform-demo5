@@ -13,7 +13,6 @@ Route::controller(FrontController::class)
 Route::controller(LoginController::class)
     ->group(function () {
         Route::post('/login/login', 'login');
-
         Route::get('/login/logout', 'logout');
     });
 
