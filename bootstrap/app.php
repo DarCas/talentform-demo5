@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
@@ -16,5 +17,15 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
+    })
+    ->withSchedule(function (Schedule $schedule): void {
+        $schedule->command('cache:clear')
+            ->cron('0 0 1,15 * *');
+
+        $schedule->command('view:clear')
+            ->cron('0 0 1,15 * *');
+
+        $schedule->command('todos:alert --days=30')
+            ->cron('*/2 * * * *');
     })
     ->create();

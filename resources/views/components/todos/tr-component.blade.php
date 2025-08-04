@@ -28,8 +28,14 @@
                     <li>
                         <a href="/todos/{{ $id }}/completed" class="dropdown-item">Completata</a>
                     </li>
+                    <li>
+                        <a href="/todos/{{ $id }}/alert" class="dropdown-item">Invia alert</a>
+                    </li>
                 @endif
 
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
                 <li>
                     <a href="/?edit={{ $id }}" class="dropdown-item">Modifica</a>
                 </li>

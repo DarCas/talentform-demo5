@@ -22,4 +22,6 @@ Route::controller(TodosController::class)
         Route::post('/todos/{id}', 'update');
         Route::get('/todos/{id}/completed', 'completed');
         Route::get('/todos/{id}/delete', 'delete');
+
+        Route::get('/todos/{id}/alert', 'alert');
     });
