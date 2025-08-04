@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\TodosAlert;
 use App\Models\Todo;
+use App\SendAlertTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class TodosController extends Controller
 {
+    use SendAlertTrait;
+
     function create(Request $request)
     {
         /**
@@ -139,29 +140,7 @@ class TodosController extends Controller
         $todo = Todo::find($id);
 
         if (!is_null($todo)) {
-            /**
-             * Tramite il Model, recupero l'utente proprietario dell'attività per avere il suo indirizzo e-mail.
-             */
-            $user = $todo->user()->first();
-
-            /**
-             * Genero il corpo del messaggio da inviare utilizzando il templating Blade.
-             */
-            $template = new TodosAlert([
-                'attivita' => $todo->titolo,
-                'dataInizio' => $todo->dataInserimentoHuman(),
-                'dataScadenza' => $todo->dataScadenzaHuman(),
-            ]);
-
-            /**
-             * Configuro un'istanza di invio e-mail dandogli come parametro l'indirizzo e-mail a cui inviare l'alert.
-             */
-            $mail = Mail::to($user->usernm);
-
-            /**
-             * Invio l'e-mail
-             */
-            $mail->send($template);
+            $this->sendAlert($todo);
         }
 
         return redirect('/');

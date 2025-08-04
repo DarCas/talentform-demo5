@@ -3,11 +3,13 @@
 namespace App\Console\Commands;
 
 use App\Models\Todo;
+use App\SendAlertTrait;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
 
 class TodosAlert extends Command
 {
+    use SendAlertTrait;
+
     protected $signature = 'todos:alert
                             {--days=7 : Numero di giorni prima della scadenza}';
 
@@ -35,29 +37,7 @@ class TodosAlert extends Command
         $todos = $builder->get();
 
         foreach ($todos as $todo) {
-            /**
-             * Tramite il Model, recupero l'utente proprietario dell'attività per avere il suo indirizzo e-mail.
-             */
-            $user = $todo->user()->first();
-
-            /**
-             * Genero il corpo del messaggio da inviare utilizzando il templating Blade.
-             */
-            $template = new \App\Mail\TodosAlert([
-                'attivita' => $todo->titolo,
-                'dataInizio' => $todo->dataInserimentoHuman(),
-                'dataScadenza' => $todo->dataScadenzaHuman(),
-            ]);
-
-            /**
-             * Configuro un'istanza di invio e-mail dandogli come parametro l'indirizzo e-mail a cui inviare l'alert.
-             */
-            $mail = Mail::to($user->usernm);
-
-            /**
-             * Invio l'e-mail
-             */
-            $mail->send($template);
+            $this->sendAlert($todo);
 
             /**
              * Imposto a «false» il campo «email» della tabella del database, così da non inviare continuamento la
