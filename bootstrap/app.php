@@ -25,7 +25,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('view:clear')
             ->cron('0 0 1,15 * *');
 
+        $schedule->command('todos:delete-completed')
+            ->everyFiveMinutes();
+
         $schedule->command('todos:alert --days=30')
-            ->cron('*/2 * * * *');
+            ->cron('*/5 * * * *');
     })
     ->create();
