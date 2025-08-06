@@ -60,6 +60,14 @@ class UsersController extends Controller
     {
         $builder = User::orderBy('usernm');
 
+        if ($request->get('q')) {
+            /**
+             * Se effettuo una ricerca, filtro i valori della tabella del database (Users) per
+             * «usernm». Utilizzo il LIKE di SQL, che mi permette di cercare una stringa all'interno di una parola.
+             */
+            $builder->where('usernm', 'LIKE', "{$request->get('q')}%");
+        }
+
         /**
          * Pagino i risultati utilizzando Eloquent di Laravel.
          */

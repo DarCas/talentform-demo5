@@ -20,7 +20,10 @@
 
                 <tbody>
                 @forelse($users as $user)
-                    <tr style="vertical-align: middle">
+                    <tr
+                        class="{{ $id === $user->id ? 'table-primary' : '' }}"
+                        style="vertical-align: middle"
+                    >
                         <td class="text-end">{{ $user->id }}</td>
                         <td>{{ $user->usernm }}</td>
                         <td class="text-end">{{ $user->logged_in }}</td>
