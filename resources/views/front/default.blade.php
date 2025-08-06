@@ -41,8 +41,14 @@
                                     <li><a class="dropdown-item" href="/todos/backup">Backup</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="/users">Utenti</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Utenti
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/users">Lista</a></li>
+                                    <li><a class="dropdown-item" href="/users/backup">Backup</a></li>
+                                </ul>
                             </li>
                             <li class="nav-item dropdown">
                                 <x-user-component

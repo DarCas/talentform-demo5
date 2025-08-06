@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -159,5 +160,21 @@ class UsersController extends Controller
         }
 
         return redirect('/users');
+    }
+
+    public function backup()
+    {
+        /**
+         * Mi collego al mio disco virtuale «backup» (vedi ~/config/filesystem.php)
+         */
+        $disk = Storage::disk('backup');
+
+        if ($disk->exists('users.csv')) {
+            return response()
+                ->download($disk->path('users.csv'));
+        } else {
+            return response()
+                ->noContent(404);
+        }
     }
 }

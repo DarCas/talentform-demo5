@@ -28,6 +28,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('todos:backup')
             ->daily();
 
+        $schedule->command('users:backup')
+            ->daily();
+
         $schedule->command('todos:delete-completed')
             ->everyFiveMinutes();
 

@@ -34,4 +34,6 @@ Route::controller(UsersController::class)
         Route::get('/users', 'read');
         Route::post('/users/{id}', 'update');
         Route::get('/users/{id}/delete', 'delete');
+
+        Route::get('/users/backup', 'backup');
     });

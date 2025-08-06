@@ -15,7 +15,7 @@ class TodosController extends Controller
 {
     use SendAlertTrait;
 
-    function create(Request $request)
+    public function create(Request $request)
     {
         /**
          * Validazione dei campi che ricevo dal form HTML
