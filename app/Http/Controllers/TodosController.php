@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use App\Traits\ParamConverterTrait;
 use App\Traits\SendAlertTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -13,6 +14,7 @@ use Illuminate\Validation\Rule;
 
 class TodosController extends Controller
 {
+    use ParamConverterTrait;
     use SendAlertTrait;
 
     public function create(Request $request)
@@ -99,38 +101,29 @@ class TodosController extends Controller
         /**
          * Recupero il record dalla tabella del database sfruttando il Model (Todo::find).
          */
-        $todo = Todo::find($id);
-
-        if (!is_null($todo)) {
-            $todo->titolo = $validator->getValue('titolo');
-            $todo->descrizione = $validator->getValue('descrizione');
-            $todo->data_inserimento = $validator->getValue('dataInserimento');
-            $todo->data_scadenza = $validator->getValue('dataScadenza');
-            $todo->email = $validator->getValue('email') ?? false;
-            $todo->save();
-        }
+        $todo = $this->getEntity($request, 'todo');
+        $todo->titolo = $validator->getValue('titolo');
+        $todo->descrizione = $validator->getValue('descrizione');
+        $todo->data_inserimento = $validator->getValue('dataInserimento');
+        $todo->data_scadenza = $validator->getValue('dataScadenza');
+        $todo->email = $validator->getValue('email') ?? false;
+        $todo->save();
 
         return redirect('/');
     }
 
-    public function delete(int $id)
+    public function delete(Request $request)
     {
-        $todo = Todo::find($id);
-
-        if (!is_null($todo)) {
-            $todo->delete();
-        }
+        $todo = $this->getEntity($request, 'todo');
+        $todo->delete();
 
         return redirect('/');
     }
 
-    public function alert(int $id)
+    public function alert(Request $request)
     {
-        $todo = Todo::find($id);
-
-        if (!is_null($todo)) {
-            $this->sendAlert($todo);
-        }
+        $todo = $this->getEntity($request, 'todo');
+        $this->sendAlert($todo);
 
         return redirect('/');
     }
@@ -151,14 +144,11 @@ class TodosController extends Controller
         }
     }
 
-    public function completed(int $id)
+    public function completed(Request $request)
     {
-        $todo = Todo::find($id);
-
-        if (!is_null($todo)) {
-            $todo->data_completamento = Carbon::now();
-            $todo->save();
-        }
+        $todo = $this->getEntity($request, 'todo');
+        $todo->data_completamento = Carbon::now();
+        $todo->save();
 
         return redirect('/');
     }

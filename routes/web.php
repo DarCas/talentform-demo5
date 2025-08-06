@@ -4,6 +4,9 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TodosController;
 use App\Http\Controllers\UsersController;
+use App\Http\Middleware\ParamsConverter;
+use App\Models\Todo;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(FrontController::class)
@@ -21,6 +24,7 @@ Route::controller(LoginController::class)
     });
 
 Route::controller(TodosController::class)
+    ->middleware(ParamsConverter::class . ':' . Todo::class . ',todo')
     ->group(function () {
         Route::post('/todos', 'create');
         Route::post('/todos/{id}', 'update');
@@ -32,6 +36,7 @@ Route::controller(TodosController::class)
     });
 
 Route::controller(UsersController::class)
+    ->middleware(ParamsConverter::class . ':' . User::class . ',user')
     ->group(function () {
         Route::post('/users', 'create');
         Route::get('/users', 'read');
