@@ -15,6 +15,9 @@ Route::controller(LoginController::class)
     ->group(function () {
         Route::post('/login/login', 'login');
         Route::get('/login/logout', 'logout');
+
+        Route::get('/login/recupera-password', 'recuperaPassword');
+        Route::post('/login/invia-password', 'inviaPassword');
     });
 
 Route::controller(TodosController::class)

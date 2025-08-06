@@ -8,33 +8,25 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class TodosAlert extends Mailable
+class UsersRecuperaPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
     public function __construct(protected array $with)
     {
-        //
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: config('mail.fromAlert.address'),
-            subject: "Alert: {$this->with['attivita']}",
+            subject: 'Recupera Password',
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
-            view: 'emails.todos-alert',
+            view: 'emails.users-recupera-password',
             with: $this->with,
         );
     }
