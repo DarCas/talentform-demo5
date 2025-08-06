@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Todo;
-use App\SendAlertTrait;
+use App\Traits\SendAlertTrait;
 use Illuminate\Console\Command;
 
 class TodosAlert extends Command

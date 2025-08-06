@@ -1,13 +1,7 @@
 @props(['user'])
-<div class="btn-group-lg">
-    <button type="button" class="btn btn-info dropdown-toggle"
-            data-bs-toggle="dropdown" aria-expanded="false">
-        {{ $user['usernm'] }}
-    </button>
-    <ul class="dropdown-menu bg-danger dropdown-menu-end shadow">
-        <li>
-            <a class="dropdown-item bg-danger text-white"
-               href="/login/logout">Logout</a>
-        </li>
-    </ul>
-</div>
+<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ $user['usernm'] }}
+</a>
+<ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/login/logout">Logout</a></li>
+</ul>

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use App\SendAlertTrait;
+use App\Traits\SendAlertTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -112,18 +113,6 @@ class TodosController extends Controller
         return redirect('/');
     }
 
-    public function completed(int $id)
-    {
-        $todo = Todo::find($id);
-
-        if (!is_null($todo)) {
-            $todo->data_completamento = Carbon::now();
-            $todo->save();
-        }
-
-        return redirect('/');
-    }
-
     public function delete(int $id)
     {
         $todo = Todo::find($id);
@@ -141,6 +130,34 @@ class TodosController extends Controller
 
         if (!is_null($todo)) {
             $this->sendAlert($todo);
+        }
+
+        return redirect('/');
+    }
+
+    public function backup()
+    {
+        /**
+         * Mi collego al mio disco virtuale «backup» (vedi ~/config/filesystem.php)
+         */
+        $disk = Storage::disk('backup');
+
+        if ($disk->exists('todos.csv')) {
+            return response()
+                ->download($disk->path('todos.csv'));
+        } else {
+            return response()
+                ->noContent(404);
+        }
+    }
+
+    public function completed(int $id)
+    {
+        $todo = Todo::find($id);
+
+        if (!is_null($todo)) {
+            $todo->data_completamento = Carbon::now();
+            $todo->save();
         }
 
         return redirect('/');

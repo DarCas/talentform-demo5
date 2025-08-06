@@ -21,7 +21,7 @@
             </div>
         @endif
 
-        <h2 class="card-title">{{ $todo ? 'Modifica' : 'Aggiungi' }} un todo</h2>
+        <h2 class="card-title">{{ $todo ? 'Modifica' : 'Aggiungi' }} un'attività</h2>
         <div class="card-text">
             <div class="row">
                 <div class="col-12 py-3">
@@ -36,6 +36,7 @@
                 <div class="col-12">
                     <textarea
                         name="descrizione"
+                        rows="4"
                         class="form-control"
                         placeholder="Descrizione"
                         required>{{ $todo?->descrizione ?? '' }}</textarea>
