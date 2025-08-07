@@ -31,7 +31,7 @@ class UsersCrud extends Command
         if (!in_array($action, ['create', 'read', 'update', 'delete'])) {
             $this->error('Operazione non valida');
 
-            return Command::FAILURE;
+            return $this::FAILURE;
         }
 
         return $this->$action();
@@ -76,7 +76,7 @@ class UsersCrud extends Command
 
             $this->info('');
 
-            return Command::FAILURE;
+            return $this::FAILURE;
         }
 
         try {
@@ -91,7 +91,7 @@ class UsersCrud extends Command
         } catch (\Exception $e) {
             $this->error($e->getMessage());
 
-            return Command::FAILURE;
+            return $this::FAILURE;
         }
     }
 
@@ -123,7 +123,7 @@ class UsersCrud extends Command
         $this->clear();
         $this->table($headers, $row);
 
-        return Command::SUCCESS;
+        return $this::SUCCESS;
     }
 
     protected function update(): int
@@ -157,7 +157,7 @@ class UsersCrud extends Command
 
                 $this->info('');
 
-                return Command::FAILURE;
+                return $this::FAILURE;
             }
 
             $builder = User::where('usernm', $usernm);
@@ -170,7 +170,7 @@ class UsersCrud extends Command
         if (is_null($user)) {
             $this->error("L'utente «{($usernm ?? $id)}» non esiste");
 
-            return Command::FAILURE;
+            return $this::FAILURE;
         }
 
         try {
@@ -204,7 +204,7 @@ class UsersCrud extends Command
 
                 $this->info('');
 
-                return Command::FAILURE;
+                return $this::FAILURE;
             }
 
             $user->passwd = sha1($passwd);
@@ -212,11 +212,11 @@ class UsersCrud extends Command
 
             $this->info("La password dell'utente «{$user->usernm}» è stata modificata");
 
-            return Command::SUCCESS;
+            return $this::SUCCESS;
         } catch (\Exception $e) {
             $this->error($e->getMessage());
 
-            return Command::FAILURE;
+            return $this::FAILURE;
         }
     }
 
@@ -251,7 +251,7 @@ class UsersCrud extends Command
 
                 $this->info('');
 
-                return Command::FAILURE;
+                return $this::FAILURE;
             }
 
             $builder = User::where('usernm', $usernm);
@@ -264,7 +264,7 @@ class UsersCrud extends Command
         if (is_null($user)) {
             $this->error("L'utente «{($usernm ?? $id)}» non esiste");
 
-            return Command::FAILURE;
+            return $this::FAILURE;
         }
 
         try {
@@ -276,11 +276,11 @@ class UsersCrud extends Command
                 $this->warn("Operazione annullata");
             }
 
-            return Command::SUCCESS;
+            return $this::SUCCESS;
         } catch (\Exception $e) {
             $this->error($e->getMessage());
 
-            return Command::FAILURE;
+            return $this::FAILURE;
         }
     }
 }

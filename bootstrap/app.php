@@ -28,10 +28,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('app:backup')
             ->everyFiveMinutes();
 
-        $schedule->command('todos:delete-completed')
+        $schedule->command('todos:tools expiration-alert --days=30')
             ->everyFiveMinutes();
 
-        $schedule->command('todos:alert --days=30')
-            ->cron('*/5 * * * *');
+        $schedule->command('todos:tools delete-completed')
+            ->everyFiveMinutes();
     })
     ->create();
