@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 abstract class AbstractBackupController extends Controller
 {
@@ -15,7 +16,7 @@ abstract class AbstractBackupController extends Controller
     protected string $context;
     protected string $title;
 
-    public function index()
+    public function index(): mixed
     {
         [$count, $items] = $this->items();
 
@@ -35,7 +36,7 @@ abstract class AbstractBackupController extends Controller
         ]);
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): mixed
     {
         /**
          * Mi collego al mio disco virtuale «backup» (vedi ~/config/filesystem.php)
@@ -58,13 +59,13 @@ abstract class AbstractBackupController extends Controller
         return redirect("/{$this->context}/backup");
     }
 
-    public function download(Request $request)
+    public function download(Request $request): BinaryFileResponse
     {
         return response()
             ->download($request->attributes->get('fileinfo')->get('filepath'));
     }
 
-    private function items()
+    private function items(): array
     {
         $disk = Storage::disk('backup');
 
