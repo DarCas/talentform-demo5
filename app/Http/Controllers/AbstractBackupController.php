@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\FilesystemTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -9,6 +10,8 @@ use Illuminate\Support\Str;
 
 abstract class AbstractBackupController extends Controller
 {
+    use FilesystemTrait;
+
     protected string $context;
     protected string $title;
 
@@ -32,7 +35,7 @@ abstract class AbstractBackupController extends Controller
         ]);
     }
 
-    public function delete(Request $request, string $filename = null)
+    public function delete(Request $request)
     {
         /**
          * Mi collego al mio disco virtuale «backup» (vedi ~/config/filesystem.php)
@@ -49,28 +52,16 @@ abstract class AbstractBackupController extends Controller
                 }
             }
         } else if ($request->isMethod('get')) {
-            if ($disk->exists("{$this->context}/$filename")) {
-                $disk->delete("{$this->context}/$filename");
-            }
+            $disk->delete($request->attributes->get('fileinfo')->get('filepath'));
         }
 
         return redirect("/{$this->context}/backup");
     }
 
-    public function download(string $filename)
+    public function download(Request $request)
     {
-        /**
-         * Mi collego al mio disco virtuale «backup» (vedi ~/config/filesystem.php)
-         */
-        $disk = Storage::disk('backup');
-
-        if ($disk->exists("{$this->context}/$filename")) {
-            return response()
-                ->download($disk->path("{$this->context}/$filename"));
-        } else {
-            return response()
-                ->noContent(404);
-        }
+        return response()
+            ->download($request->attributes->get('fileinfo')->get('filepath'));
     }
 
     private function items()
@@ -83,7 +74,7 @@ abstract class AbstractBackupController extends Controller
                 $oDateTime = \DateTime::createFromFormat('U', $disk->lastModified($file));
 
                 return [
-                    'filename' => substr($file, 6),
+                    'filename' => collect(explode('/', $file))->last(),
                     'filesize' => $this->filesizeVerbose($disk->size($file), 1),
                     'filetype' => $disk->mimeType($file),
                     'lastModified' => $oDateTime->format('d/m/Y H:i:s'),
@@ -95,38 +86,5 @@ abstract class AbstractBackupController extends Controller
             $items->count(),
             $items->values(),
         ];
-    }
-
-    private function filesizeVerbose(int $bytes, int $decimals = 2, bool $iec = false): string
-    {
-        if ($iec) {
-            /**
-             * Dimensioni con sistema binario
-             */
-            $size = ['B', 'kiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
-        } else {
-            /**
-             * Dimensioni con sistema decimale
-             */
-            $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-        }
-
-        /**
-         * Setto il dividendo in funzione del paramentro $iec
-         * che mi indica se voglio il valore con il sistema decimale
-         * o il sistema binario
-         */
-        $divider = $iec ? 1024 : 1000;
-
-        $factor = 0;
-
-        while ($bytes >= $divider) {
-            $bytes /= $divider;
-
-            ++$factor;
-        }
-
-        return number_format($bytes, $decimals) .
-            " {$size[$factor]}";
     }
 }
