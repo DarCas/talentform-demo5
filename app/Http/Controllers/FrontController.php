@@ -11,65 +11,52 @@ class FrontController extends Controller
     public function index(Request $request)
     {
         /**
-         * Verifico se è stato effettuato l'accesso
+         * Interrogo la tabella del database tramite il Model (Todo).
+         * Recupero solo i record dell'utente loggato.
+         * Ordino i records per «data_inserimento» e «data_scadenza».
          */
-        if (Session::has('logged_in')) {
+        $builder = Todo::where('user_id', Session::get('logged_in')->id)
+            ->orderBy('data_inserimento')
+            ->orderBy('data_scadenza');
+
+        if ($request->get('q')) {
             /**
-             * Interrogo la tabella del database tramite il Model (Todo).
-             * Recupero solo i record dell'utente loggato.
-             * Ordino i records per «data_inserimento» e «data_scadenza».
+             * Se effettuo una ricerca, filtro i valori della tabella del database (Todo) per
+             * «titolo» e per «descrizione». Utilizzo il LIKE di SQL, che mi permette di cercare
+             * una stringa all'interno di una parola.
+             *
+             * Il record viene selezionato se la stringa è presente in «titolo» oppure in «descrizione» o in
+             * entrambe le colonne.
              */
-            $builder = Todo::where('user_id', Session::get('logged_in')->id)
-                ->orderBy('data_inserimento')
-                ->orderBy('data_scadenza');
-
-            if ($request->get('q')) {
-                /**
-                 * Se effettuo una ricerca, filtro i valori della tabella del database (Todo) per
-                 * «titolo» e per «descrizione». Utilizzo il LIKE di SQL, che mi permette di cercare
-                 * una stringa all'interno di una parola.
-                 *
-                 * Il record viene selezionato se la stringa è presente in «titolo» oppure in «descrizione» o in
-                 * entrambe le colonne.
-                 */
-                $builder->where('titolo', 'LIKE', "%{$request->get('q')}%");
-                $builder->orWhere('descrizione', 'LIKE', "%{$request->get('q')}%");
-            }
-
-            /**
-             * Pagino i risultati utilizzando Eloquent di Laravel.
-             */
-            $paginate = $builder->paginate((int)$request->get('perPage', 10));
-
-            $todo = null;
-
-            if ($request->get('edit')) {
-                /**
-                 * Se esiste il parametro GET «edit», provo a recuperare il record dalla tabella del database
-                 * corrispondente all'ID indicato.
-                 */
-                $todo = Todo::find($request->get('edit'));
-            }
-
-            $content = view('front.todos', [
-                // Passo gli eventuali errori al form di creazione di un Todo
-                'errors' => Session::get('errors'),
-                // Passo la paginazione dei risultati
-                'pagination' => $paginate->links()->toHtml(),
-                // Passo tutti i risultati
-                'todos' => $paginate->items(),
-                // Passo il record che eventualmente è in modifica
-                'todo' => $todo,
-            ]);
-        } else {
-            /**
-             * Se non è stato effettuato l'accesso, visualizzo il form di login.
-             */
-            $content = view('front.login', [
-                // Passo gli eventuali errori in fase di login
-                'errors' => Session::get('errors'),
-            ]);
+            $builder->where('titolo', 'LIKE', "%{$request->get('q')}%");
+            $builder->orWhere('descrizione', 'LIKE', "%{$request->get('q')}%");
         }
+
+        /**
+         * Pagino i risultati utilizzando Eloquent di Laravel.
+         */
+        $paginate = $builder->paginate((int)$request->get('perPage', 10));
+
+        $todo = null;
+
+        if ($request->get('edit')) {
+            /**
+             * Se esiste il parametro GET «edit», provo a recuperare il record dalla tabella del database
+             * corrispondente all'ID indicato.
+             */
+            $todo = Todo::find($request->get('edit'));
+        }
+
+        $content = view('front.todos', [
+            // Passo gli eventuali errori al form di creazione di un Todo
+            'errors' => Session::get('errors'),
+            // Passo la paginazione dei risultati
+            'pagination' => $paginate->links()->toHtml(),
+            // Passo tutti i risultati
+            'todos' => $paginate->items(),
+            // Passo il record che eventualmente è in modifica
+            'todo' => $todo,
+        ]);
 
         /**
          * Una volta visualizzati, cancello gli eventuali errori.
@@ -77,7 +64,7 @@ class FrontController extends Controller
         Session::forget('errors');
 
         return view('front.default', [
-            'centered' => !Session::has('logged_in'),
+            'centered' => false,
             'content' => $content,
             'title' => 'Home',
             'q' => $request->get('q'),

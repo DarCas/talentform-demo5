@@ -11,6 +11,6 @@ Route::controller(TodosController::class)
 
         Route::post('/todos', 'create');
         Route::get('/todos', 'read');
-        Route::put('/todos/{id}', 'update');
-        Route::delete('/todos/{id}', 'delete');
+        Route::put('/todos/{todo}', 'update');
+        Route::delete('/todos/{todo}', 'delete');
     });

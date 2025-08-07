@@ -111,7 +111,7 @@ class UsersController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, User $user)
     {
         /**
          * Validazione dei campi che ricevo dal form HTML
@@ -121,7 +121,7 @@ class UsersController extends Controller
                 'required',
                 'email:rfc',
                 Rule::unique('users', 'usernm')
-                    ->ignore($id),
+                    ->ignore($user->id),
             ],
             'passwd' => [
                 'required',
@@ -146,26 +146,18 @@ class UsersController extends Controller
                 return $carry;
             }, []));
 
-            return redirect("/users?edit=$id");
+            return redirect("/users?edit={$user->id}");
         }
 
-        $user = User::find($id);
-
-        if (!is_null($user)) {
-            $user->passwd = sha1($validator->getValue('passwd'));
-            $user->save();
-        }
+        $user->passwd = sha1($validator->getValue('passwd'));
+        $user->save();
 
         return redirect('/users');
     }
 
-    public function delete(int $id)
+    public function delete(User $user)
     {
-        $user = User::find($id);
-
-        if (!is_null($user)) {
-            $user->delete();
-        }
+        $user->delete();
 
         return redirect('/users');
     }

@@ -12,6 +12,30 @@ use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
+    function index()
+    {
+        /**
+         * Se non è stato effettuato l'accesso, visualizzo il form di login.
+         */
+        $content = view('front.login', [
+            // Passo gli eventuali errori in fase di login
+            'errors' => Session::get('errors'),
+        ]);
+
+        /**
+         * Una volta visualizzati, cancello gli eventuali errori.
+         */
+        Session::forget('errors');
+
+        return view('front.default', [
+            'centered' => true,
+            'content' => $content,
+            'title' => 'Home',
+            'q' => null,
+            'user' => null,
+        ]);
+    }
+
     function login(Request $request)
     {
         $validator = Validator::make($request->post(), [

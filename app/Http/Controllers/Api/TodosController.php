@@ -88,7 +88,7 @@ class TodosController extends Controller
             ]);
     }
 
-    function update(Request $request, int $id)
+    function update(Request $request, Todo $todo)
     {
         $validator = Validator::make($request->post(), [
             'userId' => 'required|integer',
@@ -118,45 +118,27 @@ class TodosController extends Controller
                 ]);
         }
 
-        $todo = Todo::find($id);
+        $todo->user_id = $validator->getValue('userId');
+        $todo->titolo = $validator->getValue('titolo');
+        $todo->descrizione = $validator->getValue('descrizione');
+        $todo->data_inserimento = $validator->getValue('dataInserimento');
+        $todo->data_scadenza = $validator->getValue('dataScadenza');
+        $todo->email = $validator->getValue('email') ?? false;
+        $todo->save();
 
-        if (!is_null($todo)) {
-            $todo->user_id = $validator->getValue('userId');
-            $todo->titolo = $validator->getValue('titolo');
-            $todo->descrizione = $validator->getValue('descrizione');
-            $todo->data_inserimento = $validator->getValue('dataInserimento');
-            $todo->data_scadenza = $validator->getValue('dataScadenza');
-            $todo->email = $validator->getValue('email') ?? false;
-            $todo->save();
-
-            return response()
-                ->json([
-                    'success' => true,
-                ]);
-        } else {
-            return response()
-                ->json([
-                    'success' => false,
-                ]);
-        }
+        return response()
+            ->json([
+                'success' => true,
+            ]);
     }
 
-    function delete(int $id)
+    function delete(Todo $todo)
     {
-        $todo = Todo::find($id);
+        $todo->delete();
 
-        if (!is_null($todo)) {
-            $todo->delete();
-
-            return response()
-                ->json([
-                    'success' => true,
-                ]);
-        } else {
-            return response()
-                ->json([
-                    'success' => false,
-                ]);
-        }
+        return response()
+            ->json([
+                'success' => true,
+            ]);
     }
 }

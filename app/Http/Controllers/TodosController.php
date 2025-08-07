@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use App\Traits\ParamConverterTrait;
 use App\Traits\SendAlertTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -14,7 +13,6 @@ use Illuminate\Validation\Rule;
 
 class TodosController extends Controller
 {
-    use ParamConverterTrait;
     use SendAlertTrait;
 
     public function create(Request $request)
@@ -68,7 +66,7 @@ class TodosController extends Controller
         return redirect('/');
     }
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, Todo $todo)
     {
         $validator = Validator::make($request->post(), [
             'titolo' => 'required|min:10|max:255',
@@ -95,13 +93,12 @@ class TodosController extends Controller
                 return $carry;
             }, []));
 
-            return redirect("/?edit=$id");
+            return redirect("/?edit={$todo->id}");
         }
 
         /**
          * Recupero il record dalla tabella del database sfruttando il Model (Todo::find).
          */
-        $todo = $this->getEntity($request, 'todo');
         $todo->titolo = $validator->getValue('titolo');
         $todo->descrizione = $validator->getValue('descrizione');
         $todo->data_inserimento = $validator->getValue('dataInserimento');
@@ -112,17 +109,15 @@ class TodosController extends Controller
         return redirect('/');
     }
 
-    public function delete(Request $request)
+    public function delete(Todo $todo)
     {
-        $todo = $this->getEntity($request, 'todo');
         $todo->delete();
 
         return redirect('/');
     }
 
-    public function alert(Request $request)
+    public function alert(Todo $todo)
     {
-        $todo = $this->getEntity($request, 'todo');
         $this->sendAlert($todo);
 
         return redirect('/');
@@ -144,9 +139,8 @@ class TodosController extends Controller
         }
     }
 
-    public function completed(Request $request)
+    public function completed(Todo $todo)
     {
-        $todo = $this->getEntity($request, 'todo');
         $todo->data_completamento = Carbon::now();
         $todo->save();
 
