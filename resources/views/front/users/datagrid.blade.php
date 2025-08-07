@@ -26,7 +26,7 @@
                     >
                         <td class="text-end">{{ $user->id }}</td>
                         <td>{{ $user->usernm }}</td>
-                        <td class="text-end">{{ $user->logged_in }}</td>
+                        <td class="text-end">{{ $user->dataUltimoAccesso() }}</td>
                         <td class="text-end">
                             <x-menu-dropdown
                                 :id="$user->id"

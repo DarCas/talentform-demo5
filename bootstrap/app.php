@@ -25,10 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('view:clear')
             ->cron('0 0 1,15 * *');
 
-        $schedule->command('todos:backup')
-            ->everyFiveMinutes();
-
-        $schedule->command('users:backup')
+        $schedule->command('app:backup')
             ->everyFiveMinutes();
 
         $schedule->command('todos:delete-completed')

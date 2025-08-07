@@ -14,16 +14,19 @@ class UsersBackup extends Command
     protected $signature = 'users:backup
                             {--orderBy=id : Ordina la lista in base alla colonna indicata}
                             {--orderDesc : Ordina la lista in ordine decrescente}
-                            {--separator=, : Carattere utilizzato per separare i campi}';
+                            {--separator=, : Carattere utilizzato per separare i campi}
+                            {--noClear : Non cancellare la finestra di comando}';
 
     protected $description = 'Eseguo il backup della tabella degli utenti in formato CSV';
 
     public function handle()
     {
-        /**
-         * Cancello tutta la finestra di comando
-         */
-        $this->clear();
+        if (!$this->option('noClear')) {
+            /**
+             * Cancello tutta la finestra di comando
+             */
+            $this->clear();
+        }
 
         /**
          * Mi collego al mio disco virtuale «backup» (vedi ~/config/filesystem.php)
