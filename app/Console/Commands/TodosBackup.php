@@ -30,10 +30,16 @@ class TodosBackup extends Command
          */
         $disk = Storage::disk('backup');
 
+        $filename = now()->format('YmdHis') . '.csv';
+
+        if (!$disk->exists('todos')) {
+            $disk->makeDirectory('todos');
+        }
+
         /**
          * Creo il percorso completo dove andrò a salvare il file
          */
-        $filepath = $disk->path("todos.csv");
+        $filepath = $disk->path("todos/$filename");
 
         try {
             /**

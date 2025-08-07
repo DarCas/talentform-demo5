@@ -7,13 +7,76 @@ use App\Traits\SendAlertTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class TodosController extends Controller
 {
     use SendAlertTrait;
+
+    public function index(Request $request)
+    {
+        /**
+         * Interrogo la tabella del database tramite il Model (Todo).
+         * Recupero solo i record dell'utente loggato.
+         * Ordino i records per «data_inserimento» e «data_scadenza».
+         */
+        $builder = Todo::where('user_id', Session::get('logged_in')->id)
+            ->orderBy('data_inserimento')
+            ->orderBy('data_scadenza');
+
+        if ($request->get('q')) {
+            /**
+             * Se effettuo una ricerca, filtro i valori della tabella del database (Todo) per
+             * «titolo» e per «descrizione». Utilizzo il LIKE di SQL, che mi permette di cercare
+             * una stringa all'interno di una parola.
+             *
+             * Il record viene selezionato se la stringa è presente in «titolo» oppure in «descrizione» o in
+             * entrambe le colonne.
+             */
+            $builder->where('titolo', 'LIKE', "%{$request->get('q')}%");
+            $builder->orWhere('descrizione', 'LIKE', "%{$request->get('q')}%");
+        }
+
+        /**
+         * Pagino i risultati utilizzando Eloquent di Laravel.
+         */
+        $paginate = $builder->paginate((int)$request->get('perPage', 10));
+
+        $todo = null;
+
+        if ($request->get('edit')) {
+            /**
+             * Se esiste il parametro GET «edit», provo a recuperare il record dalla tabella del database
+             * corrispondente all'ID indicato.
+             */
+            $todo = Todo::find($request->get('edit'));
+        }
+
+        $content = view('front.todos', [
+            // Passo gli eventuali errori al form di creazione di un Todo
+            'errors' => Session::get('errors'),
+            // Passo la paginazione dei risultati
+            'pagination' => $paginate->links()->toHtml(),
+            // Passo tutti i risultati
+            'todos' => $paginate->items(),
+            // Passo il record che eventualmente è in modifica
+            'todo' => $todo,
+        ]);
+
+        /**
+         * Una volta visualizzati, cancello gli eventuali errori.
+         */
+        Session::forget('errors');
+
+        return view('front.default', [
+            'centered' => false,
+            'content' => $content,
+            'title' => 'To-Do',
+            'q' => $request->get('q'),
+            'user' => Session::get('logged_in'),
+        ]);
+    }
 
     public function create(Request $request)
     {
@@ -121,22 +184,6 @@ class TodosController extends Controller
         $this->sendAlert($todo);
 
         return redirect('/');
-    }
-
-    public function backup()
-    {
-        /**
-         * Mi collego al mio disco virtuale «backup» (vedi ~/config/filesystem.php)
-         */
-        $disk = Storage::disk('backup');
-
-        if ($disk->exists('todos.csv')) {
-            return response()
-                ->download($disk->path('todos.csv'));
-        } else {
-            return response()
-                ->noContent(404);
-        }
     }
 
     public function completed(Todo $todo)

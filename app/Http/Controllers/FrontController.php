@@ -2,73 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Todo;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-
 class FrontController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        /**
-         * Interrogo la tabella del database tramite il Model (Todo).
-         * Recupero solo i record dell'utente loggato.
-         * Ordino i records per «data_inserimento» e «data_scadenza».
-         */
-        $builder = Todo::where('user_id', Session::get('logged_in')->id)
-            ->orderBy('data_inserimento')
-            ->orderBy('data_scadenza');
-
-        if ($request->get('q')) {
-            /**
-             * Se effettuo una ricerca, filtro i valori della tabella del database (Todo) per
-             * «titolo» e per «descrizione». Utilizzo il LIKE di SQL, che mi permette di cercare
-             * una stringa all'interno di una parola.
-             *
-             * Il record viene selezionato se la stringa è presente in «titolo» oppure in «descrizione» o in
-             * entrambe le colonne.
-             */
-            $builder->where('titolo', 'LIKE', "%{$request->get('q')}%");
-            $builder->orWhere('descrizione', 'LIKE', "%{$request->get('q')}%");
-        }
-
-        /**
-         * Pagino i risultati utilizzando Eloquent di Laravel.
-         */
-        $paginate = $builder->paginate((int)$request->get('perPage', 10));
-
-        $todo = null;
-
-        if ($request->get('edit')) {
-            /**
-             * Se esiste il parametro GET «edit», provo a recuperare il record dalla tabella del database
-             * corrispondente all'ID indicato.
-             */
-            $todo = Todo::find($request->get('edit'));
-        }
-
-        $content = view('front.todos', [
-            // Passo gli eventuali errori al form di creazione di un Todo
-            'errors' => Session::get('errors'),
-            // Passo la paginazione dei risultati
-            'pagination' => $paginate->links()->toHtml(),
-            // Passo tutti i risultati
-            'todos' => $paginate->items(),
-            // Passo il record che eventualmente è in modifica
-            'todo' => $todo,
-        ]);
-
-        /**
-         * Una volta visualizzati, cancello gli eventuali errori.
-         */
-        Session::forget('errors');
-
-        return view('front.default', [
-            'centered' => false,
-            'content' => $content,
-            'title' => 'Home',
-            'q' => $request->get('q'),
-            'user' => Session::get('logged_in'),
-        ]);
+        return redirect('/todos');
     }
 }

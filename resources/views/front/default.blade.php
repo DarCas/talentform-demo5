@@ -37,7 +37,7 @@
                                     To-Do
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/">Lista</a></li>
+                                    <li><a class="dropdown-item" href="/todos">Lista</a></li>
                                     <li><a class="dropdown-item" href="/todos/backup">Backup</a></li>
                                 </ul>
                             </li>

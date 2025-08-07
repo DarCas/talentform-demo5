@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Todos;
 use App\Http\Controllers\TodosController;
+use App\Http\Controllers\Users;
 use App\Http\Controllers\UsersController;
 use App\Http\Middleware\Authenticator;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +31,8 @@ Route::controller(LoginController::class)
 Route::controller(TodosController::class)
     ->middleware(Authenticator::class)
     ->group(function () {
+        Route::get('/todos', 'index');
+
         Route::post('/todos', 'create');
         Route::post('/todos/{todo}', 'update');
         Route::get('/todos/{todo}/delete', 'delete');
@@ -38,6 +42,15 @@ Route::controller(TodosController::class)
         Route::get('/todos/{todo}/completed', 'completed');
     });
 
+Route::controller(Todos\BackupController::class)
+    ->middleware(Authenticator::class)
+    ->group(function () {
+        Route::get('/todos/backup', 'index');
+        Route::post('/todos/backup/delete', 'delete');
+        Route::get('/todos/backup/{filename}/delete', 'delete');
+        Route::get('/todos/backup/{filename}/download', 'download');
+    });
+
 Route::controller(UsersController::class)
     ->middleware(Authenticator::class)
     ->group(function () {
@@ -45,6 +58,13 @@ Route::controller(UsersController::class)
         Route::get('/users', 'read');
         Route::post('/users/{user}', 'update');
         Route::get('/users/{user}/delete', 'delete');
+    });
 
-        Route::get('/users/backup', 'backup');
+Route::controller(Users\BackupController::class)
+    ->middleware(Authenticator::class)
+    ->group(function () {
+        Route::get('/users/backup', 'index');
+        Route::post('/users/backup/delete', 'delete');
+        Route::get('/users/backup/{filename}/delete', 'delete');
+        Route::get('/users/backup/{filename}/download', 'download');
     });

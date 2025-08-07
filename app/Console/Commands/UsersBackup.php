@@ -30,10 +30,16 @@ class UsersBackup extends Command
          */
         $disk = Storage::disk('backup');
 
+        $filename = now()->format('YmdHis') . '.csv';
+
+        if (!$disk->exists('users')) {
+            $disk->makeDirectory('users');
+        }
+
         /**
          * Creo il percorso completo dove andrò a salvare il file
          */
-        $filepath = $disk->path("users.csv");
+        $filepath = $disk->path("users/$filename");
 
         try {
             /**
