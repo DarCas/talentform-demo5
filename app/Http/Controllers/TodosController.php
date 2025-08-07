@@ -34,8 +34,8 @@ class TodosController extends Controller
              * Il record viene selezionato se la stringa è presente in «titolo» oppure in «descrizione» o in
              * entrambe le colonne.
              */
-            $builder->where('titolo', 'LIKE', "%{$request->get('q')}%");
-            $builder->orWhere('descrizione', 'LIKE', "%{$request->get('q')}%");
+            $builder->where('titolo', 'LIKE', "%{$request->get('q')}%")
+                ->orWhere('descrizione', 'LIKE', "%{$request->get('q')}%");
         }
 
         /**
