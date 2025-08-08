@@ -71,8 +71,12 @@ class Todo extends Model
             ->format('d/m/Y');
     }
 
-    function dataScadenzaHuman(): string
+    function dataScadenzaHuman($silent = false, $raw = false): ?string
     {
+        if (!$this->data_scadenza) {
+            return $silent ? null : 'N/A';
+        }
+
         $data = $this->data_scadenza
             ->format('d/m/Y');
 
@@ -81,7 +85,7 @@ class Todo extends Model
 
         $days = round($days);
 
-        return "{$data} ({$days} giorni)";
+        return $raw ? $data : "{$data} ({$days} giorni)";
     }
 
     function dataCompletamentoHuman(): ?string

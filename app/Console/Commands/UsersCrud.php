@@ -87,7 +87,7 @@ class UsersCrud extends Command
 
             $this->info("Utente «{$usernm}» aggiunto");
 
-            return Command::SUCCESS;
+            return $this::SUCCESS;
         } catch (\Exception $e) {
             $this->error($e->getMessage());
 
