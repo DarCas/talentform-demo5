@@ -43,14 +43,18 @@ Route::controller(TodosController::class)
     });
 
 Route::controller(Todos\BackupController::class)
-    ->middleware(Middleware\Authenticator::class)
     ->group(function () {
-        Route::get('/todos/backup', 'index');
-        Route::post('/todos/backup/delete', 'delete');
+        Route::middleware(Middleware\Authenticator::class)
+            ->group(function () {
+                Route::get('/todos/backup', 'index');
+                Route::post('/todos/backup/delete', 'delete');
+            });
 
         Route::middleware(Middleware\File::class . ':todos')
             ->group(function () {
-                Route::get('/todos/backup/{filename}/delete', 'delete');
+                Route::get('/todos/backup/{filename}/delete', 'delete')
+                    ->middleware(Middleware\Authenticator::class);
+
                 Route::get('/todos/backup/{filename}/download', 'download');
             });
     });
@@ -65,14 +69,18 @@ Route::controller(UsersController::class)
     });
 
 Route::controller(Users\BackupController::class)
-    ->middleware(Middleware\Authenticator::class)
     ->group(function () {
-        Route::get('/users/backup', 'index');
-        Route::post('/users/backup/delete', 'delete');
+        Route::middleware(Middleware\Authenticator::class)
+            ->group(function () {
+                Route::get('/users/backup', 'index');
+                Route::post('/users/backup/delete', 'delete');
+            });
 
         Route::middleware(Middleware\File::class . ':users')
             ->group(function () {
-                Route::get('/users/backup/{filename}/delete', 'delete');
+                Route::get('/users/backup/{filename}/delete', 'delete')
+                    ->middleware(Middleware\Authenticator::class);
+                
                 Route::get('/users/backup/{filename}/download', 'download');
             });
     });
