@@ -8,11 +8,11 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 
-class AppBackup extends Command
+class BackupApp extends Command
 {
     use CommandsHelperTrait;
 
-    protected $signature = 'app:backup
+    protected $signature = 'backup:app
                             {context? : Operazione da eseguire: todos, users}
                             {--orderBy=id : Ordina la lista in base alla colonna indicata}
                             {--orderDesc : Ordina la lista in ordine decrescente}

@@ -25,7 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('view:clear')
             ->cron('0 0 1,15 * *');
 
-        $schedule->command('app:backup')
+        $schedule->command('backup:app')
             ->everyFiveMinutes();
 
         $schedule->command('todos:tools expiration-alert --days=30')

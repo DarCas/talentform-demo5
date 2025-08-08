@@ -38,7 +38,7 @@ class BackupCrud extends Command
 
     protected function create(): int
     {
-        return $this->call('app:backup', [
+        return $this->call('backup:app', [
             'context' => $this->argument('context'),
         ]);
     }
