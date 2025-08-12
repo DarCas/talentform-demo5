@@ -37,7 +37,6 @@ Route::controller(TodosController::class)
         Route::post('/todos/{todo}', 'update');
         Route::get('/todos/{todo}/delete', 'delete');
 
-        Route::get('/todos/backup', 'backup');
         Route::get('/todos/{todo}/alert', 'alert');
         Route::get('/todos/{todo}/completed', 'completed');
     });
@@ -80,7 +79,7 @@ Route::controller(Users\BackupController::class)
             ->group(function () {
                 Route::get('/users/backup/{filename}/delete', 'delete')
                     ->middleware(Middleware\Authenticator::class);
-                
+
                 Route::get('/users/backup/{filename}/download', 'download');
             });
     });

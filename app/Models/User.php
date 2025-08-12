@@ -37,6 +37,10 @@ class User extends Model
         'logged_in'
     ];
 
+    protected $hidden = [
+        'passwd',
+    ];
+
     public function todos()
     {
         return $this->hasMany(Todo::class);
